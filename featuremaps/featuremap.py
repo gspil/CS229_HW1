@@ -67,7 +67,7 @@ class LinearModel(object):
         # *** START CODE HERE ***
         n_examples = X.shape[0];
 
-        map = np.zeros(n_examples, k + 2)
+        map = np.zeros((n_examples, k + 2))
 
         for i in range (0, n_examples):
             # skip intercept value to get x
@@ -121,8 +121,12 @@ def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename='plot.png'
         # *** START CODE HERE ***
         lm = LinearModel()
 
-        poly_train = lm.create_poly(k, train_x)
-        poly_predict = lm.create_poly(k, plot_x)
+        if sine:
+            poly_train = lm.create_sin(k, train_x)
+            poly_predict = lm.create_sin(k, plot_x)
+        else:
+            poly_train = lm.create_poly(k, train_x)
+            poly_predict = lm.create_poly(k, plot_x)
 
         lm.fit(poly_train, train_y)
 
@@ -151,7 +155,6 @@ def main(train_path, small_path, eval_path):
     run_exp(train_path, sine=True, filename='plot_4d.png')
 
     run_exp(small_path, ks=[1, 2, 5, 10, 20], filename='plot_4e.png')
-
     # *** END CODE HERE ***
 
 if __name__ == '__main__':
