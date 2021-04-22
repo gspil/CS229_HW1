@@ -5,7 +5,11 @@ VisualStudioVersion = 15.0.28307.1500
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "poisson", "poisson\poisson.pyproj", "{85377A58-B9E7-4080-A84F-07B9E006871C}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "LinearClassifier", "LinearClassifier\LinearClassifier.pyproj", "{1A1246E3-C372-4FAB-B787-2BE9763A020D}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "featuremaps", "featuremaps\featuremaps.pyproj", "{BB86DB49-4E37-47E2-9C9F-FA95CA15B99D}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "posonly", "posonly\posonly.pyproj", "{2A015080-E53C-4B9B-8CE1-F6CB5E94F065}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "linearclass", "linearclass\linearclass.pyproj", "{1A1246E3-C372-4FAB-B787-2BE9763A020D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,10 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{85377A58-B9E7-4080-A84F-07B9E006871C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{85377A58-B9E7-4080-A84F-07B9E006871C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB86DB49-4E37-47E2-9C9F-FA95CA15B99D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB86DB49-4E37-47E2-9C9F-FA95CA15B99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A015080-E53C-4B9B-8CE1-F6CB5E94F065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A015080-E53C-4B9B-8CE1-F6CB5E94F065}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A1246E3-C372-4FAB-B787-2BE9763A020D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A1246E3-C372-4FAB-B787-2BE9763A020D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
