@@ -23,9 +23,11 @@ def main(lr, train_path, eval_path, save_path):
     # Run on the validation set, and use np.savetxt to save outputs to save_path
     # *** END CODE HERE ***
 
-# Function to calculate the negative log of Theta multiplied by x
+# Function to calculate 1 devided by the negative EXP of the log of Theta T  x + Theta0
 def poisson_expected_val (theta, x):
     return np.exp(np.matmul(np.transpose(theta), x))
+#   return 1 / ( 1 + np.exp(-1 * (np.matmul(np.transpose(theta), x))))
+#    return 1 / ( 1 + np.exp(-1 * (np.matmul(np.transpose(theta), x) + theta_0)))
 
 # L1 Normalization
 def L1Norm(x):
@@ -56,6 +58,7 @@ class PoissonRegression:
             verbose: Print loss values during training.
         """
         self.theta = theta_0
+        self.theta_0 = 0.0
         self.step_size = step_size
         self.max_iter = max_iter
         self.eps = eps
