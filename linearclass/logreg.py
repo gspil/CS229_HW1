@@ -20,7 +20,7 @@ def main(train_path, valid_path, save_path):
 
     predictions = clf.predict(x_eval)
 
-    # Vars for confustion matrix to calculate a ccuracy and precision
+    # Vars for confusion matrix to calculate accuracy and precision
     posPredictedPos = 0
     posPredictedNeg = 0
     negPredictedNeg = 0
@@ -58,10 +58,14 @@ def main(train_path, valid_path, save_path):
 
     # *** END CODE HERE ***
 
-# Sigmoid Function
-def sigmoid(x):
-    sig = 1.0 / (1.0 + math.exp(-x))
-    return sig
+# Sigmoid Function divided alpha if defined
+def hypothesis_X(x, alpha):
+    val = 1.0 / (1.0 + math.exp(-x))
+
+    if (alpha != None):
+        val /= alpha
+
+    return val
 
 # L1 Normalization
 def L1Norm(x):
@@ -83,7 +87,7 @@ class LogisticRegression:
         > clf.predict(x_eval)
     """
     def __init__(self, step_size=1.0, max_iter=1000000, eps=1e-5,
-                 theta_0=None, verbose=True):
+                 theta_0=None, verbose=True, alpha = None):
         """
         Args:
             step_size: Step size for iterative solvers only.
@@ -97,6 +101,7 @@ class LogisticRegression:
         self.max_iter = max_iter
         self.eps = eps
         self.verbose = verbose
+        self.alpha = alpha
 
     def fit(self, x, y):
         """Run Newton's Method to minimize J(theta) for logistic regression.
@@ -124,7 +129,7 @@ class LogisticRegression:
 
                 x_vector = np.transpose(np.array(x[i]).reshape(1, num_features))
 
-                h_Theta_X = sigmoid(np.matmul(np.transpose(x_vector),self.theta))
+                h_Theta_X = hypothesis_X(np.matmul(np.transpose(x_vector),self.theta), self.alpha)
 
                 if self.verbose is True:
                     loss -= y[i] * np.log(h_Theta_X) + (1 - y[i]) * np.log(1 - h_Theta_X)
@@ -182,7 +187,7 @@ class LogisticRegression:
 
         for i in range (0, num_data):
             x_vector = np.transpose(np.array(x[i]).reshape(1, num_features))
-            h_Theta_X = sigmoid(np.matmul(np.transpose(x_vector),self.theta))
+            h_Theta_X = hypothesis_X(np.matmul(np.transpose(x_vector),self.theta), self.alpha)
             if (h_Theta_X > .5):
                 predictions[i] = 1.0
 

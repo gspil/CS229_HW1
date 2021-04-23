@@ -12,6 +12,21 @@ from logreg import LogisticRegression
 WILDCARD = 'X'
 
 
+# Function to predict alpha. Take the set of Y labels and predictions.
+# Sum up the predicted value and divide by the number of positive lables.
+def predict_alpha(Y, predictions):
+
+    num_data = Y.shape[0]
+    sum = 0.0
+    num_pos = 0
+
+    for i in range(0, num_data):
+        if Y[i] > 0.0 :
+            sum += predictions[i]
+            num_pos += 1
+
+    return sum/num_pos
+
 def main(train_path, valid_path, test_path, save_path):
     """Problem 2: Logistic regression for incomplete, positive-only labels.
 
@@ -31,12 +46,59 @@ def main(train_path, valid_path, test_path, save_path):
     output_path_adjusted = save_path.replace(WILDCARD, 'adjusted')
 
     # *** START CODE HERE ***
+
+    x_train, y_train = util.load_dataset(train_path, label_col='y', add_intercept=True)
+    x_train, t_train = util.load_dataset(train_path, label_col='t', add_intercept=True)
+    x_valid, y_valid = util.load_dataset(valid_path, label_col='y', add_intercept=True)
+    x_valid, t_valid = util.load_dataset(valid_path, label_col='t', add_intercept=True)
+    x_test, y_test   = util.load_dataset(test_path, label_col='y', add_intercept=True)
+    x_test, t_test   = util.load_dataset(test_path, label_col='t', add_intercept=True)
+    
     # Part (a): Train and test on true labels
     # Make sure to save predicted probabilities to output_path_true using np.savetxt()
+    clf_a = LogisticRegression()
+    clf_a.fit(x_train, t_train)
+    
+    predictions = clf_a.predict(x_test)
+
+    np.savetxt(output_path_true, predictions)
+
+    util.plot(x_test, t_test, clf_a.theta, "4A.png", correction=1.0)
+
     # Part (b): Train on y-labels and test on true labels
     # Make sure to save predicted probabilities to output_path_naive using np.savetxt()
+    clf_b = LogisticRegression()
+    clf_b.fit(x_train, y_train)
+
+    predictions = clf_b.predict(x_test)
+
+    np.savetxt(output_path_naive, predictions)
+
+    util.plot(x_test, t_test, clf_b.theta, "4B.png", correction=1.0)
+
+
     # Part (f): Apply correction factor using validation set and test on true labels
     # Plot and use np.savetxt to save outputs to output_path_adjusted
+
+    # Run CLF on the valid data set to generate the predictions on valid.
+    # Use the predictions and y data to calculate alpha.
+    clf_valid = LogisticRegression()
+    clf_valid.fit(x_valid, t_valid)
+
+    predictions_valid = clf_b.predict(x_valid)
+
+    predicted_alpha = predict_alpha(y_valid, predictions_valid)
+
+    # Run the CLF from part b on test data
+    clf_f = LogisticRegression(alpha = .7)
+    clf_f.fit(x_valid, y_valid)
+
+    predictions = clf_f.predict(x_test)
+
+    np.savetxt(output_path_adjusted, predictions * predicted_alpha)
+
+    util.plot(x_test, y_test, clf_f.theta, "4F.png", correction=predicted_alpha)
+
     # *** END CODER HERE
 
 if __name__ == '__main__':

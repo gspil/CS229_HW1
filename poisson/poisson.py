@@ -1,4 +1,5 @@
 import numpy as np
+from util import plot
 import util
 import matplotlib.pyplot as plt
 
@@ -13,21 +14,33 @@ def main(lr, train_path, eval_path, save_path):
     """
     # Load training set
     x_train, y_train = util.load_dataset(train_path, add_intercept=True)
+    x_eval, y_eval = util.load_dataset(eval_path, add_intercept=True)
 
     # *** START CODE HERE ***
-    clf = PoissonRegression(step_size=lr)
+    pr = PoissonRegression()
 
     # Fit a Poisson Regression model
-    clf.fit(x_train, y_train)
+    pr.fit(x_train, y_train)
 
     # Run on the validation set, and use np.savetxt to save outputs to save_path
+    predictions = pr.predict(x_eval)    
+    
+
+    plt.figure()
+    plt.plot(y_eval, predictions, 'go', linewidth=2)
+    plt.xlabel('true')
+    plt.ylabel('predicted')
+    plt.savefig("poisson.png")
+
+    np.savetxt(save_path, predictions)
     # *** END CODE HERE ***
 
-# Function to calculate 1 devided by the negative EXP of the log of Theta T  x + Theta0
+
+    
+
+# Function to calculate exp(Theta Transpose X)
 def poisson_expected_val (theta, x):
-    return np.exp(np.matmul(np.transpose(theta), x))
-#   return 1 / ( 1 + np.exp(-1 * (np.matmul(np.transpose(theta), x))))
-#    return 1 / ( 1 + np.exp(-1 * (np.matmul(np.transpose(theta), x) + theta_0)))
+    return np.exp(np.matmul(np.transpose(theta), x)[0][0])
 
 # L1 Normalization
 def L1Norm(x):
@@ -58,7 +71,6 @@ class PoissonRegression:
             verbose: Print loss values during training.
         """
         self.theta = theta_0
-        self.theta_0 = 0.0
         self.step_size = step_size
         self.max_iter = max_iter
         self.eps = eps
@@ -78,29 +90,24 @@ class PoissonRegression:
         convergance = False
         iteration = 0
 
-        hessian = np.zeros((num_features, num_features))
         self.theta = np.zeros((num_features, 1))
         theta_step = np.zeros((num_features, 1))
-
-        #for i in range(0, num_features):
-            #self.theta[i] = 0.5
 
         while not convergance:
 
             for i in range(0, num_data):
 
-                expected_val = poisson_expected_val(self.theta, x[i])
+                x_vector = np.transpose(np.array(x[i]).reshape(1, num_features))
+
+                expected_val = poisson_expected_val(self.theta, x_vector)
 
                 for j in range(0, num_features):
-                        theta_step[j] += (y[i] - expected_val) * x[i][j]
+                        theta_step[j] +=  (y[i] - expected_val) * x[i][j]
 
             #end of iteration over data
+            theta_step *= self.step_size
 
-            # save the results of update to theta so we can calculate the L1Norm value of the delta in theta
-            foo = (self.step_size/num_data) * theta_step
-
-            #new_theta = (self.theta) + ((self.step_size/num_data) * theta_step)
-            new_theta = (self.theta) + ((self.step_size) * theta_step)
+            new_theta = self.theta + theta_step
 
             delta_theta = self.theta - new_theta
 
@@ -115,6 +122,10 @@ class PoissonRegression:
                 iteration += 1
                 print("delta = ", L1Norm(delta_theta))
 
+            if iteration > self.max_iter:
+                convergance = True
+                print("Exiting after hitting max iterations of ", + str(self.max_iter))
+
         # *** END CODE HERE ***
 
     def predict(self, x):
@@ -127,6 +138,16 @@ class PoissonRegression:
             Floating-point prediction for each input, shape (n_examples,).
         """
         # *** START CODE HERE ***
+        num_data = x.shape[0]
+        num_features = x.shape[1]
+
+        predictions = np.zeros((num_data, 1))
+
+        for i in range (0, num_data):
+            x_vector = np.transpose(np.array(x[i]).reshape(1, num_features))
+            predictions[i] = poisson_expected_val(x_vector, self.theta)
+
+        return predictions
         # *** END CODE HERE ***
 
 if __name__ == '__main__':

@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1a1246e3-c372-4fab-b787-2be9763a020d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>logreg.py</StartupFile>
+    <StartupFile>gda.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +21,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="logreg.py" />
+    <Compile Include="gda.py" />
+    <Compile Include="..\..\..\..\..\..\..\temp\logreg.py">
+      <Link>logreg.py</Link>
+    </Compile>
     <Compile Include="util.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
