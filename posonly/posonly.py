@@ -82,22 +82,22 @@ def main(train_path, valid_path, test_path, save_path):
 
     # Run CLF on the valid data set to generate the predictions on valid.
     # Use the predictions and y data to calculate alpha.
-    clf_valid = LogisticRegression()
-    clf_valid.fit(x_valid, t_valid)
+    clf_f = LogisticRegression()
+    clf_f.fit(x_train, t_train)
 
-    predictions_valid = clf_b.predict(x_valid)
+    predictions_for_valid = clf_f.predict(x_valid)
 
-    predicted_alpha = predict_alpha(y_valid, predictions_valid)
+    alpha = predict_alpha(t_valid, predictions_for_valid)
 
     # Run the CLF from part b on test data
-    clf_f = LogisticRegression(alpha = .7)
-    clf_f.fit(x_valid, y_valid)
 
     predictions = clf_f.predict(x_test)
+   
+    scaled_predictions = predictions * alpha
 
-    np.savetxt(output_path_adjusted, predictions * predicted_alpha)
+    np.savetxt(output_path_adjusted, scaled_predictions)
 
-    util.plot(x_test, y_test, clf_f.theta, "4F.png", correction=predicted_alpha)
+    util.plot(x_test, y_test, clf_f.theta, "4F.png", correction=alpha)
 
     # *** END CODER HERE
 
