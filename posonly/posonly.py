@@ -63,7 +63,7 @@ def main(train_path, valid_path, test_path, save_path):
 
     np.savetxt(output_path_true, predictions)
 
-    util.plot(x_test, t_test, clf_a.theta, "4A.png", correction=1.0)
+    util.plot(x_test, t_test, clf_a.theta, "5A.png", correction=1.0)
 
     # Part (b): Train on y-labels and test on true labels
     # Make sure to save predicted probabilities to output_path_naive using np.savetxt()
@@ -74,7 +74,7 @@ def main(train_path, valid_path, test_path, save_path):
 
     np.savetxt(output_path_naive, predictions)
 
-    util.plot(x_test, t_test, clf_b.theta, "4B.png", correction=1.0)
+    util.plot(x_test, t_test, clf_b.theta, "5B.png", correction=1.0)
 
 
     # Part (f): Apply correction factor using validation set and test on true labels
@@ -97,7 +97,7 @@ def main(train_path, valid_path, test_path, save_path):
 
     np.savetxt(output_path_adjusted, scaled_predictions)
 
-    util.plot(x_test, y_test, clf_f.theta, "4F.png", correction=alpha)
+    util.plot(x_test, y_test, clf_f.theta, "5F.png", correction=alpha)
 
     # *** END CODER HERE
 

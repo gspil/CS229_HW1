@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>1a1246e3-c372-4fab-b787-2be9763a020d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>gda.py</StartupFile>
+    <StartupFile>..\..\..\..\..\..\..\temp\logreg.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
